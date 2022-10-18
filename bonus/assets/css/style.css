@@ -1,0 +1,43 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+body{
+    background-color: lavender;
+}
+.container{
+    max-width: 1200px;
+    margin: 2rem auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.cell{
+    /* width:calc(100% / 10); */
+    aspect-ratio: 1/1;
+    border:1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.light_blue{
+    background-color: lightblue;
+}
+
+.red{
+    background-color: red;
+}
+
+.grid_7{
+    width: calc(100% / 7);
+}
+
+.grid_9{
+    width: calc(100% / 9);
+} 
+    
+.grid_10{
+    width: calc(100% / 10);
+} 
