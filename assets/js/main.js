@@ -8,66 +8,39 @@
 
 */
 
-/* Strumenti
-    2. addEventListener("click", function){
-        if numero è presente, allora colora la cella di rosso e termina la partita, else colora la cella di azzurro e continua la partita.
-    }
-    3. Termine partita: Condizione da indicare nel loop
-    4. Inserisco nella dom il punteggio = n. di click su caselle senza bombe
-*/
+/* Passaggi:
+    3: 
+    - Seleziono elemento della dom in cui stampare il messaggio (queryselector)
+    - Se l'utente clicca su una casella che nasconde una bomba, allora:
+        -la casella si colora di rosso e termina la partita
+    - Altrimenti: 
+        - la casella si colora di azzurro finchè l'utente non ha raggiunto il numero massimo di numeri consentiti(ovvero quando ha rivelato tutte le celle che non sono bombe).
+    
+    4: stampo a schermo il risultato = n di volte che l'utente ha cliccato su una cella
+        non compresa tra quelle che hanno le bombe
+/*
 
 
-/* function cellGenerator () */
+/* Generate cells */
 function cellGenerator (cellNumber, domEl){
     for(i = 1; i <= cellNumber; i++){
         domEl.innerHTML += `<div class="cell">${i}</div>`;
     }
 }
 
-/* Generate grid */
-
-const btnEl = document.querySelector("button"); // button selector
-
-btnEl.addEventListener("click", function (){
-
-    const containerEl = document.querySelector('.container'); 
-    const cellNumber = 100;
-    cellGenerator(cellNumber,containerEl);
-
-    const bombs = generateBombs(1,100);
-    console.log(bombs);
-    
-    const cellList = document.querySelectorAll(".cell")
-
-    for(let i = 0; i < cellList.length; i++){
-       const thisCell = cellList[i];
-       console.log(thisCell);
-        // change cells color
-       thisCell.addEventListener("click", function(){
-            const thisNumber = Number(thisCell.textContent);
-
-            if(bombs.includes(thisNumber)){
-                thisCell.classList.add("red");
-            }
-            thisCell.classList.add("light_blue");
-        })
-
-    }
-})
-
-// Generate random numbers between min/max
+/* Generate random numbers between min/max */
 function generateRandomNumbers(min, max) {
     return Math.floor(Math.random() * (max - min) ) + min;
 }
 
-// Generate bombs based on random numbers
+/* Generate bombs based on random numbers */
 function generateBombs (min, max){
 
     const bombs = []; // empty array declaration
     
     // while loop to push random numbers into array (until i is different from 16)
-    while(bombs.length !== 16){
-        const bomb = generateRandomNumbers(1,100);
+    while(bombs.length !== 5){
+        const bomb = generateRandomNumbers(1,10);
         // if statement: if bombs[] doesn't include bomb, push it to array
         if(!bombs.includes(bomb)){
             bombs.push(bomb);
@@ -76,3 +49,45 @@ function generateBombs (min, max){
     return  bombs;
 }
 
+/* Generate grid */
+const btnEl = document.querySelector("button"); // button selector
+
+btnEl.addEventListener("click", function (){
+
+    const containerEl = document.querySelector('.container'); 
+    const cellNumber = 10;
+    cellGenerator(cellNumber,containerEl);
+
+    const bombs = generateBombs(1,5);
+    console.log(bombs);
+    
+    const cellList = document.querySelectorAll(".cell")
+
+    for(let i = 0; i < cellList.length; i++){
+       const thisCell = cellList[i];
+
+        // change cells color
+       thisCell.addEventListener("click", function(){
+
+            const thisNumber = Number(thisCell.textContent);
+
+            const result = document.querySelector("h2");
+
+            const blueCells = document.querySelectorAll(".light_blue");
+            
+                if(!bombs.includes(thisNumber)){
+                    thisCell.classList.add("light_blue");
+                    console.log(blueCells.length);
+                } else if(bombs.includes(thisNumber)){
+                    thisCell.classList.add("red");
+                    result.innerHTML = `Mi dispiace, hai perso. Il tuo punteggio è ${blueCells.length}`// bomb  
+                } 
+        })
+    }
+})
+
+/* 
+1. Se il numero della cella non è compreso nell'array delle bombe, allora colorala di azzuro.
+    Termine: quando ho raggiunto il numero massimo di click (max - bombs.values)
+2. altrimenti colora di rosso la cella e termina la partita
+*/
