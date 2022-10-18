@@ -15,7 +15,6 @@
         -la casella si colora di rosso e termina la partita
     - Altrimenti: 
         - la casella si colora di azzurro finchè l'utente non ha raggiunto il numero massimo di numeri consentiti(ovvero quando ha rivelato tutte le celle che non sono bombe).
-    
     4: stampo a schermo il risultato = n di volte che l'utente ha cliccato su una cella
         non compresa tra quelle che hanno le bombe
 /*
@@ -39,8 +38,8 @@ function generateBombs (min, max){
     const bombs = []; // empty array declaration
     
     // while loop to push random numbers into array (until i is different from 16)
-    while(bombs.length !== 5){
-        const bomb = generateRandomNumbers(1,10);
+    while(bombs.length !== 16){
+        const bomb = generateRandomNumbers(1,100);
         // if statement: if bombs[] doesn't include bomb, push it to array
         if(!bombs.includes(bomb)){
             bombs.push(bomb);
@@ -51,14 +50,17 @@ function generateBombs (min, max){
 
 /* Generate grid */
 const btnEl = document.querySelector("button"); // button selector
+const containerEl = document.querySelector('.container'); // grid selector
 
 btnEl.addEventListener("click", function (){
 
-    const containerEl = document.querySelector('.container'); 
-    const cellNumber = 10;
+    
+    containerEl.innerHTML = '';
+
+    const cellNumber = 100;
     cellGenerator(cellNumber,containerEl);
 
-    const bombs = generateBombs(1,5);
+    const bombs = generateBombs(1,100);
     console.log(bombs);
     
     const cellList = document.querySelectorAll(".cell")
@@ -66,7 +68,6 @@ btnEl.addEventListener("click", function (){
     for(let i = 0; i < cellList.length; i++){
        const thisCell = cellList[i];
 
-        // change cells color
        thisCell.addEventListener("click", function(){
 
             const thisNumber = Number(thisCell.textContent);
@@ -74,20 +75,18 @@ btnEl.addEventListener("click", function (){
             const result = document.querySelector("h2");
 
             const blueCells = document.querySelectorAll(".light_blue");
-            
-                if(!bombs.includes(thisNumber)){
-                    thisCell.classList.add("light_blue");
-                    console.log(blueCells.length);
-                } else if(bombs.includes(thisNumber)){
+                // changing cell colors
+                if(bombs.includes(thisNumber)){
                     thisCell.classList.add("red");
-                    result.innerHTML = `Mi dispiace, hai perso. Il tuo punteggio è ${blueCells.length}`// bomb  
-                } 
+                    result.innerHTML = `Mi dispiace, hai perso. Il tuo punteggio è ${blueCells.length}`
+                } else if(!bombs.includes(thisNumber)){
+                    thisCell.classList.add("light_blue");
+                    const maxBlueCells = cellNumber - bombs.length;
+
+                    if(blueCells.length === (maxBlueCells - 1)){    // maxBlueCells selected
+                        result.innerHTML = `Hai vinto!`;
+                    }
+                }
         })
     }
 })
-
-/* 
-1. Se il numero della cella non è compreso nell'array delle bombe, allora colorala di azzuro.
-    Termine: quando ho raggiunto il numero massimo di click (max - bombs.values)
-2. altrimenti colora di rosso la cella e termina la partita
-*/
