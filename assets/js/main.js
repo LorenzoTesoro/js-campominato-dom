@@ -48,3 +48,24 @@ btnEl.addEventListener("click", function (){
     3. Termine partita: Condizione da indicare nel loop
     4. Inserisco nella dom il punteggio = n. di click su caselle senza bombe
 */
+
+
+// 1. Funzione per generare numeri casuali in un range(min, max)
+function generateRandomNumbers(min, max) {
+    return Math.floor(Math.random() * (max - min) ) + min;
+}
+
+// 1.1. Dichiare un array vuota
+const bombs = []; // empty array
+
+// 1.2. ciclo while per pushare i numeri nell'array (finchè i è diverso da 16)
+let i = 0;
+
+while(i !== 16){
+    const bomb = generateRandomNumbers(1,100);
+    // 1.2.1. if statement per check se i numeri sono già presenti
+    if(!bombs.includes(bomb)){ // se non è presente lo pushi
+        bombs.push(bomb);
+    } 
+    i++;
+}
