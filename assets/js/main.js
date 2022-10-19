@@ -52,16 +52,15 @@ function generateBombs (min, max){
 const btnEl = document.querySelector("button"); // button selector
 const containerEl = document.querySelector('.container'); // grid selector
 
-btnEl.addEventListener("click", function (){
 
+btnEl.addEventListener("click", function (){
     
     containerEl.innerHTML = '';
-
+    // generate grid
     const cellNumber = 100;
     cellGenerator(cellNumber,containerEl);
-
+    // generate all bombs
     const bombs = generateBombs(1,100);
-    console.log(bombs);
     
     const cellList = document.querySelectorAll(".cell")
 
@@ -79,14 +78,23 @@ btnEl.addEventListener("click", function (){
                 if(bombs.includes(thisNumber)){
                     thisCell.classList.add("red");
                     result.innerHTML = `Mi dispiace, hai perso. Il tuo punteggio è ${blueCells.length}`
+                    containerEl.innerHTML = "";
                 } else if(!bombs.includes(thisNumber)){
                     thisCell.classList.add("light_blue");
                     const maxBlueCells = cellNumber - bombs.length;
 
                     if(blueCells.length === (maxBlueCells - 1)){    // maxBlueCells selected
-                        result.innerHTML = `Hai vinto!`;
+                        result.innerHTML = `Hai vinto! Il tuo punteggio è ${maxBlueCells}`;
+                        containerEl.innerHTML = "";
                     }
                 }
         })
     }
 })
+
+
+
+/* 
+    bombs.sort() --- metodo per ordinare gli elementi dell'array;
+
+*/
