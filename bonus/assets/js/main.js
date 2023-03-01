@@ -85,7 +85,7 @@ btnGenerateGrid.addEventListener("click", function () {
       if (bombs.includes(thisNumber)) {
         thisCell.classList.add("red");
         result.innerHTML = `Mi dispiace, hai perso. Il tuo punteggio è ${blueCells.length}`;
-        //containerEl.innerHTML = "";
+        containerEl.innerHTML = "";
       } else if (!bombs.includes(thisNumber)) {
         thisCell.classList.add("light_blue");
         const maxBlueCells = cellNumber - bombs.length;
